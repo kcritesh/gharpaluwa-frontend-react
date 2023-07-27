@@ -7,12 +7,11 @@ import Register from "src/pages/auth/Register";
 
 // Project imports
 import ProtectedRoute from "./protectedRoute";
-// import Dashboard from "../pages/manage/dashboard";
+import Dashboard from "src/pages/manage/dashboard";
 
 import PublicRoute from "./PublicRoute";
-// import CreateBank from "../pages/manage/settings/bank/create";
-// import EditBank from "src/pages/manage/settings/bank/edit";
 
+import VerifyEmail from "src/pages/verifyEmail";
 const Router = () => {
   // Fallback path which will be redirected to
   const fallbackPath = "/login";
@@ -20,15 +19,23 @@ const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/manage/dashboard" replace={true} />} />
-        
-        <Route path="/" element={<PublicRoute />} >
+        <Route path="*" element={<Navigate to="/404" replace={true} />} />
+        <Route path="/404" element={<h1>404</h1>} />
+        <Route path="/verify-email/:token" element={<VerifyEmail />} />
+        <Route
+          path="/"
+          element={<Navigate to="/manage/dashboard" replace={true} />}
+        />
+
+        <Route path="/" element={<PublicRoute />}>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Route>
-        <Route path="/" element={<ProtectedRoute fallbackPath={fallbackPath} />}>
-          {/* <Route path="/manage/dashboard" element={<Dashboard />} /> */}
-          
+        <Route
+          path="/"
+          element={<ProtectedRoute fallbackPath={fallbackPath} />}
+        >
+          <Route path="/manage/dashboard" element={<Dashboard />} />
         </Route>
       </Routes>
     </BrowserRouter>
