@@ -31,6 +31,22 @@ export const signinFail = (error) => ({
   payload: error,
 });
 
+// Register user
+export const registerStart = (formData, cb) => ({
+  type: AuthType.REGISTER_START,
+  payload: { formData, cb },
+});
+
+export const registerSuccess = (currentUser) => ({
+  type: AuthType.REGISTER_SUCCESS,
+  payload: currentUser,
+});
+
+export const registerFail = (error) => ({
+  type: AuthType.REGISTER_FAILURE,
+  payload: error,
+})
+
 // Logout the user
 export const signoutStart = (cb) => ({
   type: AuthType.SIGN_OUT_START,

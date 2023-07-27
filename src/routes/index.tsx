@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 // Pages imports
 import Login from "../pages/auth/Login";
+import Register from "src/pages/auth/Register";
 
 // Project imports
 import ProtectedRoute from "./protectedRoute";
@@ -23,6 +24,7 @@ const Router = () => {
         
         <Route path="/" element={<PublicRoute />} >
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Route>
         <Route path="/" element={<ProtectedRoute fallbackPath={fallbackPath} />}>
           {/* <Route path="/manage/dashboard" element={<Dashboard />} /> */}

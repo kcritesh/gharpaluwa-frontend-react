@@ -16,6 +16,7 @@ const authReducer = (state = INITIAL_STATE, action) => {
   switch (type) {
     case AuthType.SIGN_IN_START:
     case AuthType.LOAD_USER_START:
+    case AuthType.REGISTER_START:
       return {
         ...state,
         loading: true,
@@ -29,6 +30,21 @@ const authReducer = (state = INITIAL_STATE, action) => {
         loading: false,
         authLoading: false,
       };
+    case AuthType.REGISTER_SUCCESS:
+      return{
+        ...state,
+        currentUser: payload,
+        loading: false,
+        authLoading: false,
+      }
+    
+    case AuthType.REGISTER_FAILURE:
+      return{
+        ...state,
+        error: payload,
+        loading: false,
+        authLoading: false,
+      }
 
       case AuthType.LOAD_USER_SUCCESS:
       return {

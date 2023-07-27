@@ -28,13 +28,12 @@ export function* loadUserAsync() {
 export function* onSigninAsync({ payload: { formData, cb } }: any) {
   try {
     // Send a sign-in request to the API
-    const { data } = yield axiosConfig.post("/api/login", {
+    const { data } = yield axiosConfig.post("/api/auth/login", {
       ...formData,
     });
 
-    console.log(data, 122);
     // Store access token in local storage
-    localStorage.setItem("access_token", data?.user_details?.token);
+    localStorage.setItem("access_token", data?.accessToken);
 
     yield put(
       authActions.signinSuccess({
@@ -45,17 +44,27 @@ export function* onSigninAsync({ payload: { formData, cb } }: any) {
       yield cb();
     }
 
-    if (data["access_token"]) {
-      setAuthToken(data["access_token"]);
-    }
-
-    yield put(authActions.loadUserStart());
+    // yield put(authActions.loadUserStart());
 
     yield put(openAlert("User Signed In Successfully", "success"));
   } catch (err) {
     console.log(err.response.data.error);
     yield put(authActions.signinFail(err));
     yield put(openAlert(err.response.data.error, "error"));
+  }
+}
+
+export function* onRegisterAsync({ payload: { formData, cb } }: any) {
+  try {
+    const {data} = yield axiosConfig.post("/api/auth/register", formData);
+    yield put(authActions.registerSuccess(data));
+    yield put(openAlert("User Registered Successfully! \nProceed to Sign In", "success"));
+    if(cb) {
+      yield cb();
+    }
+  } catch (error) {
+    yield put(authActions.registerFail(error));
+    yield put(openAlert(error.response.data.message, "error"));
   }
 }
 
@@ -83,10 +92,14 @@ export function* watchSignin() {
   yield takeLatest(AuthType.SIGN_IN_START, onSigninAsync);
 }
 
+export function* watchRegister() {
+  yield takeLatest(AuthType.REGISTER_START, onRegisterAsync);
+}
+
 export function* watchSignout() {
   yield takeLatest(AuthType.SIGN_OUT_START, signOutAsync);
 }
 
 export function* authSagas() {
-  yield all([call(watchSignin), call(watchSignout), call(watchLoadUser)]);
+  yield all([call(watchSignin), call(watchSignout), call(watchLoadUser), call(watchRegister)]);
 }
