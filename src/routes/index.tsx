@@ -21,7 +21,7 @@ const Router = () => {
       <Routes>
         <Route path="*" element={<Navigate to="/404" replace={true} />} />
         <Route path="/404" element={<h1>404</h1>} />
-        <Route path="/verify-email/:token" element={<VerifyEmail />} />
+        <Route path="/verify-email/" element={<VerifyEmail />} />
         <Route
           path="/"
           element={<Navigate to="/manage/dashboard" replace={true} />}
