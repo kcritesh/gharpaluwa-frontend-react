@@ -11,7 +11,7 @@ export function* loadUserAsync() {
   if (localStorage["access_token"]) {
     try {
       // Fetch user data from the API
-      const { data: userData } = yield axiosConfig.get(`/api/load-user/token`);
+      const { data: userData } = yield axiosConfig.get(`/api/user/load-user`);
       yield put(authActions.loadUserSuccess(userData));
     } catch (error) {
       localStorage.removeItem("access_token");
@@ -44,13 +44,13 @@ export function* onSigninAsync({ payload: { formData, cb } }: any) {
       yield cb();
     }
 
-    // yield put(authActions.loadUserStart());
+    yield put(authActions.loadUserStart());
 
     yield put(openAlert("User Signed In Successfully", "success"));
   } catch (err) {
-    console.log(err.response.data.error);
+  
     yield put(authActions.signinFail(err));
-    yield put(openAlert(err.response.data.error, "error"));
+    yield put(openAlert(err.response.data.message, "error"));
   }
 }
 
@@ -73,7 +73,7 @@ export function* signOutAsync({ payload: { cb } }: any) {
     yield put(authActions.signoutSuccess());
 
     localStorage.removeItem("access_token");
-    yield put(openAlert("User Singed Out Successfully", "success"));
+    yield put(openAlert("User Signed Out Successfully", "success"));
     if (cb) {
       yield cb();
     }
