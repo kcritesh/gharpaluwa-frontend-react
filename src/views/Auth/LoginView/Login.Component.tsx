@@ -129,7 +129,6 @@ function LoginView({ onSigninStart }: any) {
                 alt="Cot of Arms"
                 style={{ marginTop: "44px" }}
               />
-
             </Box>
           </Grid>
 
@@ -159,21 +158,18 @@ function LoginView({ onSigninStart }: any) {
                       .required("Password Required")
                       .matches(
                         /^(?=.*[!@#$%^&*(),.?":{}|<>])(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{6,}$/,
-                        'Password must be at least 6 characters long and contain at least 1 special character, uppercase, lowercase, and a number.'
+                        "Password must be at least 6 characters long and contain at least 1 special character, uppercase, lowercase, and a number."
                       ),
                   })}
                   onSubmit={(values, { setSubmitting }) => {
                     setSubmitting(false);
-                    onSigninStart(
-                      values,
-                      () => {
-                        setSubmitting(true);
-                        navigate("/manage/dashboard");
-                      }
-                    );
+                    onSigninStart(values, () => {
+                      setSubmitting(true);
+                      navigate("/manage/dashboard");
+                    });
                   }}
                 >
-                  {({  isSubmitting }) => (
+                  {({ isSubmitting }) => (
                     <Form>
                       <Box>
                         <Typography sx={{ ...miniTitle }}>Email</Typography>
@@ -205,7 +201,11 @@ function LoginView({ onSigninStart }: any) {
                                   onClick={handleClickShowPassword}
                                   onMouseDown={handleMouseDownPassword}
                                 >
-                                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                                  {showPassword ? (
+                                    <VisibilityOff />
+                                  ) : (
+                                    <Visibility />
+                                  )}
                                 </IconButton>
                               </InputAdornment>
                             ),
@@ -281,6 +281,32 @@ function LoginView({ onSigninStart }: any) {
                         >
                           Sign in
                         </Button>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "flex-end",
+                          alignItems: "center",
+                          marginTop: "20px",
+                        }}
+                      >
+                        <Box>
+                          <Link
+                            to="/register"
+                            style={{ textDecoration: "none" }}
+                          >
+                            <Typography
+                              sx={{
+                                fontWeight: 500,
+                                fontSize: "14px",
+                                lineHeight: "20px",
+                                color: "#1366D9",
+                              }}
+                            >
+                              Create New Account ?
+                            </Typography>
+                          </Link>
+                        </Box>
                       </Box>
                     </Form>
                   )}
