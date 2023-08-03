@@ -16,8 +16,8 @@ type ProtectedRouteProps = {
 
 // ================ Protected Route Components ============================= //
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
-  fallbackPath
-} : ProtectedRouteProps) => {
+  fallbackPath,
+}: ProtectedRouteProps) => {
   // Check if user is authenticated or not. If not then redirects to login page
   const { isAuthenticated, authLoading } = useSelector(
     (state: any) => state.auth
@@ -32,7 +32,6 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
           alignItems: "center",
           height: "100vh",
           width: "100%",
-          backgroundColor: "#fff8f8"
         }}
       >
         <img src={LoadingIcon} alt="Loading...." />
