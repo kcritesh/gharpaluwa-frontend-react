@@ -12,6 +12,8 @@ import Dashboard from "src/pages/manage/dashboard";
 import PublicRoute from "./PublicRoute";
 
 import VerifyEmail from "src/pages/verifyEmail";
+import OrdersPage from "src/pages/manage/orders/Orders";
+import ProductsPage from "src/pages/manage/products/Products";
 const Router = () => {
   // Fallback path which will be redirected to
   const fallbackPath = "/login";
@@ -36,6 +38,9 @@ const Router = () => {
           element={<ProtectedRoute fallbackPath={fallbackPath} />}
         >
           <Route path="/manage/dashboard" element={<Dashboard />} />
+          <Route path="/manage/products" element={<ProductsPage/>}/>
+          <Route path="/manage/orders" element={<OrdersPage/>}/>
+          
         </Route>
       </Routes>
     </BrowserRouter>

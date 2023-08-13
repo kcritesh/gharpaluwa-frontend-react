@@ -1,7 +1,23 @@
 import { Box, Button } from "@mui/material";
 import container from "./Dashboard.Container";
 
-const Dashboard = ({ auth: { currentUser }, onSignOutStart }) => {
+interface DashboardProps {
+  auth: {
+    currentUser: {
+      firstName: string;
+      lastName: string;
+      email: string;
+      address: string;
+      isEmailVerified: boolean;
+    };
+  };
+  onSignOutStart: (callback: () => void) => void;
+}
+
+const Dashboard = ({
+  auth: { currentUser },
+  onSignOutStart,
+}: DashboardProps) => {
   return (
     <Box sx={{ padding: "20px" }}>
       <h1>Dashboard</h1>
