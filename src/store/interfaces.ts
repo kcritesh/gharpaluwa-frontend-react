@@ -6,3 +6,9 @@ export interface IAuthState {
   loading: boolean;
   authLoading?: boolean;
 }
+
+export interface IProductState {
+  userProducts: any[];
+  error: any | null;
+  loading: boolean;
+}
