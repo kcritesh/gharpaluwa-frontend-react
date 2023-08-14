@@ -33,15 +33,17 @@ import container from "./Navbar.Container";
 import LogoutIcon from "@mui/icons-material/Logout";
 import PersonIcon from "@mui/icons-material/Person";
 
-function Navbar({ currentUser, onLogout }) {
+interface Props {
+  currentUser: any;
+  onLogout: any;
+}
+
+function Navbar({ currentUser, onLogout }: Props) {
   const navigate = useNavigate();
   const capitalizeFirstLetter = (string: string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
   const location = useLocation();
-  const rawpathname = location.pathname;
-  const path = rawpathname.split("/");
-  const breadCrumbTitle = capitalizeFirstLetter(rawpathname.split("/")[2]);
 
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
