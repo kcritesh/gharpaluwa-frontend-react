@@ -17,6 +17,17 @@ export function* fetchUserProductsAsync() {
     }
 }
 
+export function* deleteProductAsync({payload: id }: any){
+  try {
+    yield axiosConfig.delete(`/api/products/${id}`);
+    yield put(ProductActions.deleteProductSuccess(id));
+    yield put(ProductActions.fetchUserProducts());
+    yield put(openAlert("Product deleted successfully", "success"));
+  } catch (error) {
+    yield put(ProductActions.deleteProductError(error));
+  }
+}
+
 export function* watchFetchUserProductsStart() {
   yield takeLatest(
     ProductTypes.GET_PRODUCTS_OF_USER_START,
@@ -24,6 +35,10 @@ export function* watchFetchUserProductsStart() {
   );
 }
 
+export function* watchDeleteProduct(){
+  yield takeLatest(ProductTypes.DELETE_PRODUCT_START, deleteProductAsync)
+}
+
 export function* productSagas() {
-  yield all([call(watchFetchUserProductsStart)]);
+  yield all([call(watchFetchUserProductsStart), call(watchDeleteProduct)]);
 }

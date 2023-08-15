@@ -10,6 +10,35 @@ export const fetchUserProductsSuccess = (products: any[]) => ({
 })
 
 export const fetchUserProductsError = (error: any) => ({
-    type: ProductTypes.GET_PRODUCTS_OF_USER_ERROR,
+    type: ProductTypes.GET_PRODUCTS_OF_USER_FAILURE,
+    payload: error
+})
+
+export const createProductStart = ( formData : any, cb : ()=> void)=>({
+    type: ProductTypes.CREATE_PRODUCT_START,
+    payload : {formData, cb}
+})
+
+export const createProductSuccess = () => ({
+    type: ProductTypes.CREATE_PRODUCT_SUCCESS,
+})
+
+export const createProductFailure = (error: any)=>({
+    type: ProductTypes.CREATE_PRODUCT_FAILURE,
+    payload : error
+})
+
+export const deleteProduct  = (productId: string) => ({
+    type: ProductTypes.DELETE_PRODUCT_START,
+    payload: productId
+})
+
+export const deleteProductSuccess = (id: any) => ({
+    type: ProductTypes.DELETE_PRODUCT_SUCCESS,
+    payload: id,
+})
+
+export const deleteProductError = (error: any) => ({
+    type: ProductTypes.DELETE_PRODUCT_FAILURE,
     payload: error
 })

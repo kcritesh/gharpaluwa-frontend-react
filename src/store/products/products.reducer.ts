@@ -21,11 +21,26 @@ switch (type) {
             userProducts: payload,
             loading: false
         }
-    case ProductTypes.GET_PRODUCTS_OF_USER_ERROR:
+    case ProductTypes.GET_PRODUCTS_OF_USER_FAILURE:
         return{
             ...state,
             error: payload,
             loading: false
+        }
+    case ProductTypes.DELETE_PRODUCT_START:
+        return{
+            ...state,
+            loading: true
+        }
+    case ProductTypes.DELETE_PRODUCT_SUCCESS:
+        return{
+            ...state,
+            loading: false
+        }
+    case ProductTypes.DELETE_PRODUCT_FAILURE:
+        return{
+            ...state,
+            error: payload,
         }
 
     default:

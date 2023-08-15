@@ -12,6 +12,11 @@ const Products = ({ fetchUserProducts, products: { userProducts } }: Props) => {
   useEffect(() => {
     fetchUserProducts();
   }, []);
+
+  const pageHeadingBox = {
+    marginLeft: "8px",
+    marginTop: "18px",
+  };
   const wrapper = {
     margin: "8px",
     background: "white",
@@ -29,17 +34,20 @@ const Products = ({ fetchUserProducts, products: { userProducts } }: Props) => {
   };
   return (
     <>
-      <Box sx={{ ...wrapper }}>
+      <Box sx={{ ...pageHeadingBox }}>
         <Typography variant="h4" sx={{ ...pageTitle }}>
           Products
         </Typography>
+      </Box>
+      <Box sx={{ ...wrapper }}>
         <Box sx={{ ...productsContainer }}>
-          <Grid container>
+          <Grid container spacing={5}>
             {userProducts?.products
               ? userProducts?.products?.map((product: any) => (
                   <Fragment key={product?._id}>
-                    <Grid item xs={12} sm={6} md={4} lg={3} spacing={2}>
+                    <Grid item xs={12} sm={6} md={4} lg={2}>
                       <ProductsCard
+                        id={product._id}
                         name={product.name}
                         description={product.description}
                         price={product.price}
