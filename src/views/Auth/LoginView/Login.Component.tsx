@@ -3,12 +3,10 @@ import {
   Box,
   Button,
   Checkbox,
-  FormControl,
   Grid,
   IconButton,
   InputAdornment,
   LinearProgress,
-  OutlinedInput,
   Typography,
   useTheme,
 } from "@mui/material";
@@ -51,12 +49,13 @@ function LoginView({ onSigninStart }: any) {
     display: "flex",
     flexDirection: "column",
     width: "440px",
-    maxHeight: "510px",
+    minHeight: "510px",
     background: "#fff",
     boxShadow: "0px 3px 10px rgba(0, 0, 0, 0.25)",
     borderRadius: "12px",
     padding: "40px",
   };
+
   const loginTitle = {
     fontWeight: 600,
     fontSize: "30px",

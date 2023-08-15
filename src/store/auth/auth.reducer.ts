@@ -11,7 +11,7 @@ const INITIAL_STATE: IAuthState = {
 };
 
 // Reducer function responsible for managing the authentication state
-const authReducer = (state = INITIAL_STATE, action) => {
+const authReducer = (state = INITIAL_STATE, action: { type: any; payload: any; }) => {
   const { type, payload } = action;
   switch (type) {
     case AuthType.SIGN_IN_START:

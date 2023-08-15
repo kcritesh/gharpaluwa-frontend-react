@@ -33,15 +33,17 @@ import container from "./Navbar.Container";
 import LogoutIcon from "@mui/icons-material/Logout";
 import PersonIcon from "@mui/icons-material/Person";
 
-function Navbar({ currentUser, onLogout }) {
+interface Props {
+  currentUser: any;
+  onLogout: any;
+}
+
+function Navbar({ currentUser, onLogout }: Props) {
   const navigate = useNavigate();
   const capitalizeFirstLetter = (string: string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
   const location = useLocation();
-  const rawpathname = location.pathname;
-  const path = rawpathname.split("/");
-  const breadCrumbTitle = capitalizeFirstLetter(rawpathname.split("/")[2]);
 
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
@@ -83,16 +85,6 @@ function Navbar({ currentUser, onLogout }) {
             >
               {/* Nav Left Section */}
               <Box sx={{ display: "flex", gap: "10px", alignItems: "center" }}>
-                {/* COA Logo */}
-                {/* <Box sx={{ height: "3.75rem", width: "4.4744rem" }}>
-                  <img
-                    src={COA}
-                    height="100%"
-                    width="100%"
-                    alt="coat-of-arms"
-                  />
-                </Box> */}
-
                 <Box>
                   <Typography
                     variant="h3"
@@ -142,15 +134,16 @@ function Navbar({ currentUser, onLogout }) {
                       <Avatar />
                       <Box sx={{ display: "flex", flexDirection: "column" }}>
                         <Typography sx={{ color: "black", fontSize: "14px" }}>
-                          {`${currentUser?.first_name} ${currentUser?.last_name}`}
+                          {`${currentUser?.firstName} ${currentUser?.lastName}`}
                         </Typography>
+
                         <Typography
                           sx={{
                             fontSize: "12px",
                             color: "rgba(0, 0, 0, 0.60)",
                           }}
                         >
-                          {currentUser?.role?.name}
+                          @{currentUser?.username}
                         </Typography>
                       </Box>
                     </Box>
@@ -173,46 +166,6 @@ function Navbar({ currentUser, onLogout }) {
             </Toolbar>
           </Box>
         </AppBar>
-
-        {/* <Box
-          sx={{
-            background: "white",
-            padding: "6px 20px",
-            marginX: "31px",
-            mt: "30px",
-            display: "flex",
-            justifyContent: "center",
-            flexDirection: "column",
-            gap: "10px",
-          }}
-        >
-          <Box>
-            <Typography
-              variant="h3"
-              sx={{ fontWeight: "500", fontSize: "1.25rem", color: "black" }}
-            >
-              {breadCrumbTitle}
-            </Typography>
-          </Box>
-
-          <Box>
-            <Breadcrumbs aria-label="navigation-breadcrumbs">
-              <Link color="inherit" to="/">
-                <IconButton>
-                  <BreadCrumbsHome />
-                </IconButton>
-              </Link>
-
-              {path
-                .filter((pathname) => pathname !== "" && pathname !== "manage")
-                .map((pathname) => (
-                  <Typography color="text.primary" key={pathname}>
-                    {pathname}
-                  </Typography>
-                ))}
-            </Breadcrumbs>
-          </Box>
-        </Box> */}
       </>
     </>
   );
