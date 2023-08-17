@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import ProductsCard from "./components/ProductsCard";
 import RefreshIcon from "@mui/icons-material/Refresh";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   fetchUserProducts: () => void;
@@ -21,6 +22,7 @@ const Products = ({
   fetchUserProducts,
   products: { userProducts, loading },
 }: Props) => {
+  const navigate = useNavigate();
   useEffect(() => {
     fetchUserProducts();
   }, []);
@@ -31,6 +33,7 @@ const Products = ({
     gap: "10px",
     justifyContent: "space-between",
     paddingX: "18px",
+    marginBottom: "18px",
   };
   const wrapper = {
     margin: "8px",
@@ -56,12 +59,20 @@ const Products = ({
       <Box sx={{ ...pageHeadingBox }}>
         <Typography variant="h4" sx={{ ...pageTitle }}>
           Products
-          <IconButton onClick={() => fetchUserProducts()}>
+          <IconButton
+            onClick={() => fetchUserProducts()}
+            aria-label="refresh button"
+          >
             <RefreshIcon />
           </IconButton>
         </Typography>
         <Box>
-          <Button variant="contained" color="primary">
+          <Button
+            variant="contained"
+            color="primary"
+            aria-label="add new products"
+            onClick={() => navigate("add")}
+          >
             Add Product
           </Button>
         </Box>
