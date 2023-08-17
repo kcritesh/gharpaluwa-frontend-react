@@ -17,6 +17,26 @@ export function* fetchUserProductsAsync() {
     }
 }
 
+export function* createProductAsync({payload: {formData, cb}}: any){
+  try {
+    yield axiosConfig.post("/api/products", formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+          
+
+        });
+    yield put(ProductActions.createProductSuccess());
+    yield put(ProductActions.fetchUserProducts());
+    yield put(openAlert("Product created successfully", "success"));
+    if(cb) {
+      cb()
+    };
+  } catch (error) {
+    yield put(ProductActions.createProductFailure(error));
+  }
+}
+
 export function* deleteProductAsync({payload: id }: any){
   try {
     yield axiosConfig.delete(`/api/products/${id}`);
@@ -35,10 +55,14 @@ export function* watchFetchUserProductsStart() {
   );
 }
 
+export function* watchCreateProductStart() {
+  yield takeLatest(ProductTypes.CREATE_PRODUCT_START, createProductAsync);
+}
+
 export function* watchDeleteProduct(){
   yield takeLatest(ProductTypes.DELETE_PRODUCT_START, deleteProductAsync)
 }
 
 export function* productSagas() {
-  yield all([call(watchFetchUserProductsStart), call(watchDeleteProduct)]);
+  yield all([call(watchFetchUserProductsStart), call(watchDeleteProduct), call(watchCreateProductStart)]);
 }
