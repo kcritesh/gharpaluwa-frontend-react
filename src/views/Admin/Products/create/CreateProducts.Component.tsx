@@ -19,12 +19,13 @@ import DefaultImage from "src/assets/images/defaultImage.svg";
 
 interface Props {
   onCreateProduct: (formData: any, cb: any) => void;
+  onUpdateProduct: (id: string, formData: any, cb: any) => void;
 }
 
-const CreateProducts = ({ onCreateProduct }: Props) => {
+const CreateProducts = ({ onCreateProduct, onUpdateProduct }: Props) => {
   const theme = useTheme();
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { id }: { id: string } = useParams();
   const isEdit = id ? true : false;
 
   const pageHeadingBox = {
@@ -112,6 +113,7 @@ const CreateProducts = ({ onCreateProduct }: Props) => {
               quantity: "",
             }}
             onSubmit={(values, { setSubmitting }) => {
+              setSubmitting(true);
               console.log(values);
               const { name, description, price, quantity } = values;
               const formData = new FormData();
@@ -120,12 +122,19 @@ const CreateProducts = ({ onCreateProduct }: Props) => {
               formData.append("price", price);
               // formData.append("quantity", quantity);
               formData.append("img", acceptedFiles[0]);
+
+              // Check if edit or create
               if (isEdit) {
-                formData.append("id", id ?? "");
+                onUpdateProduct(id, formData, () => {
+                  setSubmitting(false);
+                  navigate("/manage/products");
+                });
+              } else if (!isEdit) {
+                onCreateProduct(formData, () => {
+                  setSubmitting(false);
+                  navigate("/manage/products");
+                });
               }
-              onCreateProduct(formData, () => {
-                navigate("/manage/products");
-              });
             }}
           >
             {() => {
@@ -209,33 +218,6 @@ const CreateProducts = ({ onCreateProduct }: Props) => {
                           marginBottom: "8px",
                         }}
                       >
-                        Description*
-                      </Typography>
-                      <Field
-                        name="description"
-                        placeholder="Enter Description of Product"
-                        fullWidth
-                        component={TextField}
-                        multiline
-                        rows={5}
-                        sx={{
-                          ...textField,
-                          "& .MuiOutlinedInput-root": {
-                            height: "",
-                          },
-                        }}
-                      />
-                    </Grid>
-                    <Grid item xs={12} md={6} lg={4}>
-                      <Typography
-                        sx={{
-                          fontWeight: 400,
-                          fontSize: "14px",
-                          lineHeight: "20px",
-                          color: theme.palette.text.primary,
-                          marginBottom: "8px",
-                        }}
-                      >
                         Upload Image
                       </Typography>
                       <Box>
@@ -305,6 +287,33 @@ const CreateProducts = ({ onCreateProduct }: Props) => {
                           <ul>{fileRejectionItems}</ul>
                         </Box>
                       </Box>
+                    </Grid>
+                    <Grid item xs={12} md={6} lg={4}>
+                      <Typography
+                        sx={{
+                          fontWeight: 400,
+                          fontSize: "14px",
+                          lineHeight: "20px",
+                          color: theme.palette.text.primary,
+                          marginBottom: "8px",
+                        }}
+                      >
+                        Description*
+                      </Typography>
+                      <Field
+                        name="description"
+                        placeholder="Enter Description of Product"
+                        fullWidth
+                        component={TextField}
+                        multiline
+                        rows={5}
+                        sx={{
+                          ...textField,
+                          "& .MuiOutlinedInput-root": {
+                            height: "",
+                          },
+                        }}
+                      />
                     </Grid>
                   </Grid>
                   <Box

@@ -23,8 +23,6 @@ export function* createProductAsync({payload: {formData, cb}}: any){
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
-          
-
         });
     yield put(ProductActions.createProductSuccess());
     yield put(ProductActions.fetchUserProducts());
@@ -34,6 +32,24 @@ export function* createProductAsync({payload: {formData, cb}}: any){
     };
   } catch (error) {
     yield put(ProductActions.createProductFailure(error));
+  }
+}
+
+export function* updateProductAsync({payload: {id,formData, cb}}: any){
+  try {
+    yield axiosConfig.put(`/api/products/${id}`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+    yield put(ProductActions.updateProductSuccess());
+    yield put(ProductActions.fetchUserProducts());
+    yield put(openAlert("Product updated successfully", "success"));
+    if(cb) {
+      cb()
+    };
+  } catch (error) {
+    yield put(ProductActions.updateProductFailure(error));
   }
 }
 
@@ -59,10 +75,14 @@ export function* watchCreateProductStart() {
   yield takeLatest(ProductTypes.CREATE_PRODUCT_START, createProductAsync);
 }
 
+export function* watchUpdateProductStart() {
+  yield takeLatest(ProductTypes.UPDATE_PRODUCT_START, updateProductAsync);
+}
+
 export function* watchDeleteProduct(){
   yield takeLatest(ProductTypes.DELETE_PRODUCT_START, deleteProductAsync)
 }
 
 export function* productSagas() {
-  yield all([call(watchFetchUserProductsStart), call(watchDeleteProduct), call(watchCreateProductStart)]);
+  yield all([call(watchFetchUserProductsStart), call(watchDeleteProduct), call(watchCreateProductStart), call(watchUpdateProductStart)]);
 }

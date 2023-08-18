@@ -28,6 +28,20 @@ export const createProductFailure = (error: any)=>({
     payload : error
 })
 
+export const updateProductStart = ( id : string, formData : any, cb : ()=> void)=>({
+    type: ProductTypes.UPDATE_PRODUCT_START,
+    payload : {id, formData, cb}
+})
+
+export const updateProductSuccess = () => ({
+    type: ProductTypes.UPDATE_PRODUCT_SUCCESS,
+})
+
+export const updateProductFailure = (error: any)=>({
+    type: ProductTypes.UPDATE_PRODUCT_FAILURE,
+    payload : error
+})
+
 export const deleteProduct  = (productId: string) => ({
     type: ProductTypes.DELETE_PRODUCT_START,
     payload: productId

@@ -4,7 +4,8 @@ import * as ProductTypes from './products.types'; // import the product types
 const INITIAL_STATE: IProductState = {
     userProducts: [],
     error: null,
-    loading: false
+    loading: false,
+    loadingCreateUpdate: false
 }
 
 const productsReducer = (state = INITIAL_STATE,  action: { type: any; payload: any; }) => {
@@ -38,6 +39,24 @@ switch (type) {
             loading: false
         }
     case ProductTypes.DELETE_PRODUCT_FAILURE:
+        return{
+            ...state,
+            error: payload,
+        }
+    case ProductTypes.CREATE_PRODUCT_START:
+    case ProductTypes.UPDATE_PRODUCT_START:
+        return{
+            ...state,
+            loadingCreateUpdate: true
+        }
+    case ProductTypes.CREATE_PRODUCT_SUCCESS:
+    case ProductTypes.UPDATE_PRODUCT_SUCCESS:
+        return{
+            ...state,
+            loadingCreateUpdate: false
+        }
+    case ProductTypes.CREATE_PRODUCT_FAILURE:
+    case ProductTypes.UPDATE_PRODUCT_FAILURE:
         return{
             ...state,
             error: payload,
