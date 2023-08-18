@@ -11,4 +11,5 @@ export interface IProductState {
   userProducts: any[];
   error: any | null;
   loading: boolean;
+  loadingCreateUpdate: boolean;
 }

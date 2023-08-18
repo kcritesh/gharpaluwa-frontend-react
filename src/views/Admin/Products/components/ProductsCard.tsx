@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { deleteProduct } from "src/store/products/products.action";
 import DialogComponent from "src/components/DialogComponent";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   id: string;
@@ -16,6 +17,7 @@ interface Props {
 }
 
 const ProductsCard = (props: Props) => {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const handleClose = () => {
     setOpen(false);
@@ -92,7 +94,7 @@ const ProductsCard = (props: Props) => {
           >
             <DeleteIcon />
           </IconButton>
-          <IconButton aria-label="edit-button">
+          <IconButton aria-label="edit-button" onClick={()=> navigate(`edit/${id}`)}>
             <EditIcon />
           </IconButton>
         </Box>

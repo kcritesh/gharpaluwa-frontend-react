@@ -1,6 +1,6 @@
 const PRIMARY = {
-  main: "#1570EF", // main color
-  dark: "#2461B4", // hover color
+  main: "#ed1e49", // main color #661f11
+  dark: "#661f11", // hover color #ed1e49
   light: "rgba(0, 0, 0, 0.1)", // border color
 };
 const TEXT = {
