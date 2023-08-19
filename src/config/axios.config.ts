@@ -2,8 +2,8 @@
 import axios, { AxiosRequestHeaders } from "axios";
 const instance = axios.create({
   // .. where we make our configurations
-  baseURL: "http://localhost:9000", // for production
-  // baseURL: "http://192.168.1.81:8000", // for local
+  baseURL: "https://api.gharpaluwa.com/", // for production
+  // baseURL: "http://localhost:9000", // for local
   // baseURL: "http://localhost", // for build
 
   headers: {
