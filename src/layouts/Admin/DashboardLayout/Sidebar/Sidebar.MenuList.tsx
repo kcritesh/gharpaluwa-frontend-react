@@ -16,7 +16,7 @@ export interface SidebarMenuListType {
   icon: (
     props: React.JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>
   ) => JSX.Element;
-  path: string;
+  path?: string;
   onClick?: () => void;
 }
 
