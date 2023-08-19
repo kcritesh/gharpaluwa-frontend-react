@@ -25,7 +25,7 @@ interface Props {
 const CreateProducts = ({ onCreateProduct, onUpdateProduct }: Props) => {
   const theme = useTheme();
   const navigate = useNavigate();
-  const { id }: { id: string } = useParams();
+  const { id } = useParams();
   const isEdit = id ? true : false;
 
   const pageHeadingBox = {
