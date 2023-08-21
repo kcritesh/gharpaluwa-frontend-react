@@ -14,7 +14,6 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 import { useNavigate } from "react-router-dom";
 import DefaultImage from "src/assets/images/defaultImage.svg";
 
-
 interface Props {
   fetchUserProducts: () => void;
   products: any;
@@ -87,7 +86,7 @@ const Products = ({
         ) : (
           <Box sx={{ ...productsContainer }}>
             <Grid container spacing={5}>
-              {userProducts?.products
+              {userProducts?.products && userProducts?.products?.length > 0
                 ? userProducts?.products?.map((product: any) => (
                     <Fragment key={product?._id}>
                       <Grid item xs={12} sm={6} md={4} lg={2}>
@@ -101,8 +100,15 @@ const Products = ({
                       </Grid>
                     </Fragment>
                   ))
-                : "No Products! Please add some products"}
+                : null}
             </Grid>
+            {userProducts?.products?.length === 0 && (
+              <Container sx={{ ...wrapper }}>
+                <Typography variant="h5" align="center">
+                  No Products Found! Add a new product to get started. ↗️
+                </Typography>
+              </Container>
+            )}
           </Box>
         )}
       </Box>
