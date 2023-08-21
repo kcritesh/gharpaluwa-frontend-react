@@ -5,13 +5,15 @@ const INITIAL_STATE: IProductState = {
     userProducts: [],
     error: null,
     loading: false,
-    loadingCreateUpdate: false
+    loadingCreateUpdate: false,
+    productById: null
 }
 
 const productsReducer = (state = INITIAL_STATE,  action: { type: any; payload: any; }) => {
 const { type, payload } = action;
 switch (type) {
     case ProductTypes.GET_PRODUCTS_OF_USER_START:
+    case ProductTypes.GET_PRODUCT_BY_ID_START:
         return {
             ...state,
             loading: true
@@ -22,7 +24,14 @@ switch (type) {
             userProducts: payload,
             loading: false
         }
+    case ProductTypes.GET_PRODUCT_BY_ID_SUCCESS:
+        return{
+            ...state,
+            productById: payload,
+            loading: false
+        }
     case ProductTypes.GET_PRODUCTS_OF_USER_FAILURE:
+    case ProductTypes.GET_PRODUCT_BY_ID_FAILURE:
         return{
             ...state,
             error: payload,

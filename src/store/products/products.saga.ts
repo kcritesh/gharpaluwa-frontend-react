@@ -17,6 +17,16 @@ export function* fetchUserProductsAsync() {
     }
 }
 
+export function* fetchProductByIdAsync({ payload: productId }: any) {
+    try {
+        const { data } = yield axiosConfig.get(`/api/products/${productId}`);
+        yield put(ProductActions.fetchProductByIdSuccess(data.product));
+    } catch (error:any) {
+        yield put(ProductActions.fetchProductByIdError(error));
+        yield put(openAlert(error.response.data.message, "error"));
+    }
+}
+
 export function* createProductAsync({payload: {formData, cb}}: any){
   try {
     yield axiosConfig.post("/api/products", formData, {
@@ -71,6 +81,13 @@ export function* watchFetchUserProductsStart() {
   );
 }
 
+export function* watchFetchProductByIdStart() {
+  yield takeLatest(
+    ProductTypes.GET_PRODUCT_BY_ID_START,
+    fetchProductByIdAsync
+  );
+}
+
 export function* watchCreateProductStart() {
   yield takeLatest(ProductTypes.CREATE_PRODUCT_START, createProductAsync);
 }
@@ -84,5 +101,11 @@ export function* watchDeleteProduct(){
 }
 
 export function* productSagas() {
-  yield all([call(watchFetchUserProductsStart), call(watchDeleteProduct), call(watchCreateProductStart), call(watchUpdateProductStart)]);
+  yield all([
+    call(watchFetchUserProductsStart), 
+    call(watchDeleteProduct),
+    call(watchCreateProductStart), 
+    call(watchUpdateProductStart),
+    call(watchFetchProductByIdStart)
+  ]);
 }
