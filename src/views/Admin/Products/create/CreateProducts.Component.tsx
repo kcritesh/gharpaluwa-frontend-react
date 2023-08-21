@@ -3,6 +3,7 @@ import container from "./CreateProducts.Container";
 import {
   Box,
   Button,
+  CircularProgress,
   Container,
   Grid,
   IconButton,
@@ -20,13 +21,25 @@ import DefaultImage from "src/assets/images/defaultImage.svg";
 interface Props {
   onCreateProduct: (formData: any, cb: any) => void;
   onUpdateProduct: (id: string, formData: any, cb: any) => void;
+  onFetchProductById: (id: string) => void;
+  products: any;
 }
 
-const CreateProducts = ({ onCreateProduct, onUpdateProduct }: Props) => {
+const CreateProducts = ({
+  onCreateProduct,
+  onUpdateProduct,
+  onFetchProductById,
+  products: { loading, productById },
+}: Props) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const { id } = useParams();
   const isEdit = id ? true : false;
+  useEffect(() => {
+    if (isEdit) {
+      onFetchProductById(id);
+    }
+  }, [isEdit]);
 
   const pageHeadingBox = {
     display: "flex",
@@ -39,7 +52,7 @@ const CreateProducts = ({ onCreateProduct, onUpdateProduct }: Props) => {
     background: "white",
     padding: "18px",
     borderRadius: "8px",
-    minHeight: "300px",
+    // minHeight: "300px",
     display: "flex",
     flexDirection: "column",
   };
@@ -105,238 +118,282 @@ const CreateProducts = ({ onCreateProduct, onUpdateProduct }: Props) => {
           </Typography>
         </Box>
         <Box>
-          <Formik
-            initialValues={{
-              name: "",
-              description: "",
-              price: "",
-              quantity: "",
-            }}
-            onSubmit={(values, { setSubmitting }) => {
-              setSubmitting(true);
-              console.log(values);
-              const { name, description, price, quantity } = values;
-              const formData = new FormData();
-              formData.append("name", name);
-              formData.append("description", description);
-              formData.append("price", price);
-              // formData.append("quantity", quantity);
-              formData.append("img", acceptedFiles[0]);
+          {loading ? (
+            <LinearProgress />
+          ) : (
+            <Formik
+              initialValues={{
+                name: "",
+                description: "",
+                price: "",
+                quantity: "",
+              }}
+              onSubmit={(values, { setSubmitting }) => {
+                setSubmitting(true);
+                console.log(values);
+                const { name, description, price, quantity } = values;
+                const formData = new FormData();
+                formData.append("name", name);
+                formData.append("description", description);
+                formData.append("price", price);
+                // formData.append("quantity", quantity);
+                formData.append("img", acceptedFiles[0]);
 
-              // Check if edit or create
-              if (isEdit) {
-                onUpdateProduct(id, formData, () => {
-                  setSubmitting(false);
-                  navigate("/manage/products");
-                });
-              } else if (!isEdit) {
-                onCreateProduct(formData, () => {
-                  setSubmitting(false);
-                  navigate("/manage/products");
-                });
-              }
-            }}
-          >
-            {() => {
-              return (
-                <Form>
-                  <Grid container spacing={2}>
-                    <Grid item xs={12} md={6} lg={4}>
-                      <Typography
-                        sx={{
-                          fontWeight: 400,
-                          fontSize: "14px",
-                          lineHeight: "20px",
-                          color: theme.palette.text.primary,
-                          marginBottom: "8px",
-                        }}
-                      >
-                        Name*
-                      </Typography>
-                      <Field
-                        name="name"
-                        placeholder="Enter Name of Product"
-                        fullWidth
-                        component={TextField}
-                        sx={{
-                          ...textField,
-                        }}
-                      />
-                    </Grid>
+                // Check if edit or create
+                if (isEdit) {
+                  onUpdateProduct(id, formData, () => {
+                    setSubmitting(false);
+                    navigate("/manage/products");
+                  });
+                } else if (!isEdit) {
+                  onCreateProduct(formData, () => {
+                    setSubmitting(false);
+                    navigate("/manage/products");
+                  });
+                }
+              }}
+            >
+              {({ setFieldValue, isSubmitting, resetForm }) => {
+                useEffect(() => {
+                  if (productById) {
+                    setFieldValue("name", productById.name);
+                    setFieldValue("price", productById.price);
+                    setFieldValue("description", productById.description);
+                  }
+                }, [productById]);
 
-                    <Grid item xs={12} md={6} lg={4}>
-                      <Typography
-                        sx={{
-                          fontWeight: 400,
-                          fontSize: "14px",
-                          lineHeight: "20px",
-                          color: theme.palette.text.primary,
-                          marginBottom: "8px",
-                        }}
-                      >
-                        Price*
-                      </Typography>
-                      <Field
-                        name="price"
-                        placeholder="Enter Price of Product"
-                        fullWidth
-                        component={TextField}
-                        sx={{
-                          ...textField,
-                        }}
-                      />
-                    </Grid>
-                    <Grid item xs={12} md={6} lg={4}>
-                      <Typography
-                        sx={{
-                          fontWeight: 400,
-                          fontSize: "14px",
-                          lineHeight: "20px",
-                          color: theme.palette.text.primary,
-                          marginBottom: "8px",
-                        }}
-                      >
-                        Quantity*
-                      </Typography>
-                      <Field
-                        name="quantity"
-                        placeholder="Enter Quantity of Product"
-                        fullWidth
-                        component={TextField}
-                        sx={{
-                          ...textField,
-                        }}
-                      />
-                    </Grid>
-                    <Grid item xs={12} md={6} lg={4}>
-                      <Typography
-                        sx={{
-                          fontWeight: 400,
-                          fontSize: "14px",
-                          lineHeight: "20px",
-                          color: theme.palette.text.primary,
-                          marginBottom: "8px",
-                        }}
-                      >
-                        Upload Image
-                      </Typography>
-                      <Box>
-                        <Dropzone
-                          onDrop={onDrop}
-                          maxFiles={1}
-                          accept={{
-                            "image/jpeg": [".jpeg", ".png"],
-                          }}
-                          validator={typeValidator}
-                        >
-                          {({ getRootProps, getInputProps }) => (
-                            <Box
-                              sx={{
-                                border: "1.8px dashed rgba(5, 173, 173, 0.5)",
-                                borderRadius: "10px",
-                                width: "100%",
-                                background: "#FFFFFF",
-                                textAlign: "center",
-                                marginBottom: (theme) => theme.spacing(3),
-                                cursor: "pointer",
-                                padding: (theme) => theme.spacing(3),
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                gap: "10px",
-                              }}
-                              {...getRootProps()}
-                            >
-                              <input {...getInputProps()} />
-                              <img src={DefaultImage} alt="default-image" />
-                              <Box>
-                                <Typography
-                                  variant="h2"
-                                  sx={{
-                                    fontSize: "18px",
-                                  }}
-                                >
-                                  Select file to import
-                                </Typography>
-                                <Typography
-                                  variant="caption"
-                                  sx={{
-                                    fontSize: "14px",
-                                  }}
-                                >
-                                  or drag and drop it here
-                                </Typography>
-                              </Box>
-                            </Box>
-                          )}
-                        </Dropzone>
-                        <Box
+                useEffect(() => {
+                  if (!isEdit) {
+                    resetForm();
+                  }
+                }, [isEdit]);
+                return (
+                  <Form>
+                    <Grid container spacing={2}>
+                      <Grid item xs={12} md={6} lg={4}>
+                        <Typography
                           sx={{
-                            width: "100%",
-                            "& > ul > li": {
-                              textDecoration: "none",
-                              listStyleType: "none",
-                              display: "flex",
-                              // flexDirection: "column",
-                              alignItems: "center",
-                              gap: "6px",
+                            fontWeight: 400,
+                            fontSize: "14px",
+                            lineHeight: "20px",
+                            color: theme.palette.text.primary,
+                            marginBottom: "8px",
+                          }}
+                        >
+                          Name*
+                        </Typography>
+                        <Field
+                          name="name"
+                          placeholder="Enter Name of Product"
+                          fullWidth
+                          component={TextField}
+                          sx={{
+                            ...textField,
+                          }}
+                        />
+                      </Grid>
+
+                      <Grid item xs={12} md={6} lg={4}>
+                        <Typography
+                          sx={{
+                            fontWeight: 400,
+                            fontSize: "14px",
+                            lineHeight: "20px",
+                            color: theme.palette.text.primary,
+                            marginBottom: "8px",
+                          }}
+                        >
+                          Price*
+                        </Typography>
+                        <Field
+                          name="price"
+                          placeholder="Enter Price of Product"
+                          fullWidth
+                          component={TextField}
+                          sx={{
+                            ...textField,
+                          }}
+                        />
+                      </Grid>
+                      <Grid item xs={12} md={6} lg={4}>
+                        <Typography
+                          sx={{
+                            fontWeight: 400,
+                            fontSize: "14px",
+                            lineHeight: "20px",
+                            color: theme.palette.text.primary,
+                            marginBottom: "8px",
+                          }}
+                        >
+                          Quantity*
+                        </Typography>
+                        <Field
+                          name="quantity"
+                          placeholder="Enter Quantity of Product"
+                          fullWidth
+                          component={TextField}
+                          sx={{
+                            ...textField,
+                          }}
+                        />
+                      </Grid>
+                      <Grid item xs={12} md={6} lg={4}>
+                        <Typography
+                          sx={{
+                            fontWeight: 400,
+                            fontSize: "14px",
+                            lineHeight: "20px",
+                            color: theme.palette.text.primary,
+                            marginBottom: "8px",
+                          }}
+                        >
+                          Description*
+                        </Typography>
+                        <Field
+                          name="description"
+                          placeholder="Enter Description of Product"
+                          fullWidth
+                          component={TextField}
+                          multiline
+                          rows={5}
+                          sx={{
+                            ...textField,
+                            "& .MuiOutlinedInput-root": {
+                              height: "",
                             },
                           }}
+                        />
+                      </Grid>
+
+                      <Grid item xs={12} md={6} lg={4}>
+                        <Typography
+                          sx={{
+                            fontWeight: 400,
+                            fontSize: "14px",
+                            lineHeight: "20px",
+                            color: theme.palette.text.primary,
+                            marginBottom: "8px",
+                          }}
                         >
-                          <ul>{acceptedFileItems}</ul>
-                          <ul>{fileRejectionItems}</ul>
+                          {isEdit ? "Change" : "Upload"} Image
+                        </Typography>
+                        <Box>
+                          <Dropzone
+                            onDrop={onDrop}
+                            maxFiles={1}
+                            accept={{
+                              "image/jpeg": [".jpeg", ".png"],
+                            }}
+                            validator={typeValidator}
+                          >
+                            {({ getRootProps, getInputProps }) => (
+                              <Box
+                                sx={{
+                                  border: "1.8px dashed rgba(5, 173, 173, 0.5)",
+                                  borderRadius: "10px",
+                                  width: "100%",
+                                  background: "#FFFFFF",
+                                  textAlign: "center",
+                                  marginBottom: (theme) => theme.spacing(3),
+                                  cursor: "pointer",
+                                  padding: (theme) => theme.spacing(3),
+                                  display: "flex",
+                                  flexDirection: isEdit ? "column" : "row",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                  gap: "10px",
+                                }}
+                                {...getRootProps()}
+                              >
+                                <input {...getInputProps()} />
+                                <img
+                                  src={
+                                    isEdit
+                                      ? productById?.imgUrl ?? DefaultImage
+                                      : DefaultImage
+                                  }
+                                  alt="default-image"
+                                  style={{
+                                    width: isEdit
+                                      ? productById?.imgUrl
+                                        ? "200px"
+                                        : ""
+                                      : "",
+                                    borderRadius: "10px",
+                                  }}
+                                />
+                                <Box>
+                                  <Typography
+                                    variant="h2"
+                                    sx={{
+                                      fontSize: "18px",
+                                    }}
+                                  >
+                                    Select file to import
+                                  </Typography>
+                                  <Typography
+                                    variant="caption"
+                                    sx={{
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    or drag and drop it here
+                                  </Typography>
+                                </Box>
+                              </Box>
+                            )}
+                          </Dropzone>
+                          <Box
+                            sx={{
+                              width: "100%",
+                              "& > ul > li": {
+                                textDecoration: "none",
+                                listStyleType: "none",
+                                display: "flex",
+                                // flexDirection: "column",
+                                alignItems: "center",
+                                gap: "6px",
+                              },
+                            }}
+                          >
+                            <ul>{acceptedFileItems}</ul>
+                            <ul>{fileRejectionItems}</ul>
+                          </Box>
                         </Box>
-                      </Box>
+                      </Grid>
                     </Grid>
-                    <Grid item xs={12} md={6} lg={4}>
-                      <Typography
-                        sx={{
-                          fontWeight: 400,
-                          fontSize: "14px",
-                          lineHeight: "20px",
-                          color: theme.palette.text.primary,
-                          marginBottom: "8px",
-                        }}
-                      >
-                        Description*
-                      </Typography>
-                      <Field
-                        name="description"
-                        placeholder="Enter Description of Product"
-                        fullWidth
-                        component={TextField}
-                        multiline
-                        rows={5}
-                        sx={{
-                          ...textField,
-                          "& .MuiOutlinedInput-root": {
-                            height: "",
-                          },
-                        }}
-                      />
-                    </Grid>
-                  </Grid>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      marginTop: "30px",
-                    }}
-                  >
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      type="submit"
+                    <Box
                       sx={{
-                        marginRight: "20px",
+                        display: "flex",
+                        marginTop: "30px",
                       }}
                     >
-                      Submit
-                    </Button>
-                  </Box>
-                </Form>
-              );
-            }}
-          </Formik>
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        type="submit"
+                        sx={{
+                          marginRight: "20px",
+                          minWidth: "100px",
+                        }}
+                      >
+                        {isSubmitting ? (
+                          <CircularProgress
+                            size={24}
+                            sx={{
+                              color: "#fff",
+                            }}
+                          />
+                        ) : (
+                          "Save"
+                        )}
+                      </Button>
+                    </Box>
+                  </Form>
+                );
+              }}
+            </Formik>
+          )}
         </Box>
       </Box>
     </>

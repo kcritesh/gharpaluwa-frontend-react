@@ -12,4 +12,5 @@ export interface IProductState {
   error: any | null;
   loading: boolean;
   loadingCreateUpdate: boolean;
+  productById: any | null;
 }

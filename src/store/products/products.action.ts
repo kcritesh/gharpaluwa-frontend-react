@@ -14,6 +14,21 @@ export const fetchUserProductsError = (error: any) => ({
     payload: error
 })
 
+export const fetchProductById = (productId: string) => ({
+    type: ProductTypes.GET_PRODUCT_BY_ID_START,
+    payload: productId
+})
+
+export const fetchProductByIdSuccess = (product: any) => ({
+    type: ProductTypes.GET_PRODUCT_BY_ID_SUCCESS,
+    payload: product
+})
+
+export const fetchProductByIdError = (error: any) => ({
+    type: ProductTypes.GET_PRODUCT_BY_ID_FAILURE,
+    payload: error
+})
+
 export const createProductStart = ( formData : any, cb : ()=> void)=>({
     type: ProductTypes.CREATE_PRODUCT_START,
     payload : {formData, cb}

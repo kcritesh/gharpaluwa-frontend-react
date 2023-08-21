@@ -12,6 +12,8 @@ import {
 import ProductsCard from "./components/ProductsCard";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { useNavigate } from "react-router-dom";
+import DefaultImage from "src/assets/images/defaultImage.svg";
+
 
 interface Props {
   fetchUserProducts: () => void;
@@ -94,7 +96,7 @@ const Products = ({
                           name={product.name}
                           description={product.description}
                           price={product.price}
-                          img={product.imgUrl}
+                          img={product.imgUrl ?? DefaultImage}
                         />
                       </Grid>
                     </Fragment>
