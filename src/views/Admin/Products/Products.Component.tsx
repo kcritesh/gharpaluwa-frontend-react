@@ -91,11 +91,12 @@ const Products = ({
                     <Fragment key={product?._id}>
                       <Grid item xs={12} sm={6} md={4} lg={2}>
                         <ProductsCard
-                          id={product._id}
-                          name={product.name}
-                          description={product.description}
-                          price={product.price}
-                          img={product.imgUrl ?? DefaultImage}
+                          id={product?._id}
+                          name={product?.name}
+                          description={product?.description}
+                          price={product?.price}
+                          img={product?.imgUrl ?? DefaultImage}
+                          quantity={product?.quantity}
                         />
                       </Grid>
                     </Fragment>
