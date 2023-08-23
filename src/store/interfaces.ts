@@ -14,3 +14,11 @@ export interface IProductState {
   loadingCreateUpdate: boolean;
   productById: any | null;
 }
+
+export interface IOrderState {
+  vendorOrders: any[];
+  customerOrders : any[];
+  error: any | null;
+  loading: boolean;
+  loadingCreateUpdate: boolean;
+}
