@@ -14,6 +14,7 @@ interface Props {
   name?: string;
   price?: number;
   description?: string;
+  quantity?: number;
 }
 
 const ProductsCard = (props: Props) => {
@@ -23,7 +24,7 @@ const ProductsCard = (props: Props) => {
     setOpen(false);
   };
 
-  const { id, img, name, price } = props;
+  const { id, img, name, price, quantity } = props;
   const dispatch = useDispatch();
   const handleDelete = (id: string) => {
     dispatch(deleteProduct(id));
@@ -85,6 +86,7 @@ const ProductsCard = (props: Props) => {
         <Box sx={{ padding: "10px" }}>
           <Typography>{name}</Typography>
           <Typography>Rs. {price}</Typography>
+          <Typography>Quantity: {quantity}</Typography>
           {/* <Typography>{description}</Typography> */}
         </Box>
         <Box>
@@ -94,7 +96,10 @@ const ProductsCard = (props: Props) => {
           >
             <DeleteIcon />
           </IconButton>
-          <IconButton aria-label="edit-button" onClick={()=> navigate(`edit/${id}`)}>
+          <IconButton
+            aria-label="edit-button"
+            onClick={() => navigate(`edit/${id}`)}
+          >
             <EditIcon />
           </IconButton>
         </Box>

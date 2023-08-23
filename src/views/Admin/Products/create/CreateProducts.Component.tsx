@@ -136,7 +136,7 @@ const CreateProducts = ({
                 formData.append("name", name);
                 formData.append("description", description);
                 formData.append("price", price);
-                // formData.append("quantity", quantity);
+                formData.append("quantity", quantity);
                 formData.append("img", acceptedFiles[0]);
 
                 // Check if edit or create
@@ -156,9 +156,10 @@ const CreateProducts = ({
               {({ setFieldValue, isSubmitting, resetForm }) => {
                 useEffect(() => {
                   if (productById) {
-                    setFieldValue("name", productById.name);
-                    setFieldValue("price", productById.price);
-                    setFieldValue("description", productById.description);
+                    setFieldValue("name", productById?.name);
+                    setFieldValue("price", productById?.price);
+                    setFieldValue("description", productById?.description);
+                    setFieldValue("quantity", productById?.quantity);
                   }
                 }, [productById]);
 
