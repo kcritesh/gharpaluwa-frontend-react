@@ -25,6 +25,7 @@ import gharpaluwaIcon from "src/assets/images/gharpaluwa.com.svg";
 
 import Checked from "src/assets/images/checked.svg";
 import UnChecked from "src/assets/images/unchecked.svg";
+import RegisterForm from "./component/RegisterForm";
 
 function RegisterView({ onRegisterStart }: any) {
   const theme = useTheme();
@@ -47,24 +48,24 @@ function RegisterView({ onRegisterStart }: any) {
   //   lineHeight: "28px",
   //   color: theme.palette.text.secondary,
   // };
-  const loginCard = {
+  const registerCard = {
     display: "flex",
     flexDirection: "column",
-    width: "700px",
+    maxWidth: "700px",
     minHeight: "510px",
     background: "#fff",
     boxShadow: "0px 3px 10px rgba(0, 0, 0, 0.25)",
     borderRadius: "12px",
     padding: "40px",
   };
-  const loginTitle = {
+  const registerTitle = {
     fontWeight: 600,
     fontSize: "30px",
     lineHeight: "38px",
     marginBottom: "12px",
     color: theme.palette.text.secondary,
   };
-  const loginSubTitle = {
+  const registerSubTitle = {
     fontWeight: 400,
     fontSize: "16px",
     lineHeight: "24px",
@@ -82,24 +83,16 @@ function RegisterView({ onRegisterStart }: any) {
     "& .MuiOutlinedInput-root": {
       height: "44px",
     },
-  };
-
-  const [showPassword, setShowPassword] = React.useState(false);
-
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
-  };
-
-  const [checked, setChecked] = React.useState(false);
-
-  const handleChange = (event: {
-    target: { checked: boolean | ((prevState: boolean) => boolean) };
-  }) => {
-    setChecked(event.target.checked);
+    '& input[type="number"]': {
+      appearance: "textfield",
+      "&::-webkit-inner-spin-button, &::-webkit-outer-spin-button": {
+        display: "none",
+      },
+      MozAppearance: "textfield",
+      "&::-moz-inner-spin-button, &::-moz-outer-spin-button": {
+        display: "none",
+      },
+    },
   };
 
   const navigate = useNavigate();
@@ -112,13 +105,12 @@ function RegisterView({ onRegisterStart }: any) {
           alignItems: "center",
           justifyContent: "center",
           minHeight: "100vh",
-          minWidth: "100vw",
         }}
       >
         <Grid container spacing={0}>
-          <Grid item xs={6}>
+          <Grid item xs={12} lg={6}>
             <Box sx={{ ...wrapper }}>
-              <Box sx={{ ...loginCard }}>
+              <Box sx={{ ...registerCard }}>
                 <Box
                   sx={{
                     display: "flex",
@@ -126,8 +118,8 @@ function RegisterView({ onRegisterStart }: any) {
                     alignItems: "center",
                   }}
                 >
-                  <Typography sx={{ ...loginTitle }}>Register</Typography>
-                  <Typography sx={{ ...loginSubTitle }}>
+                  <Typography sx={{ ...registerTitle }}>Register</Typography>
+                  <Typography sx={{ ...registerSubTitle }}>
                     Please fill in the form to create an account
                   </Typography>
                 </Box>
@@ -136,6 +128,7 @@ function RegisterView({ onRegisterStart }: any) {
                     firstName: "",
                     lastName: "",
                     email: "",
+                    phone: "",
                     username: "",
                     address: "",
                     password: "",
@@ -148,6 +141,13 @@ function RegisterView({ onRegisterStart }: any) {
                     email: Yup.string()
                       .email("Invalid email address.")
                       .required("Email is required."),
+                    phone: Yup.string()
+                      .matches(
+                        /^[0-9]+$/,
+                        "Phone number must contain only digits"
+                      )
+                      .min(10, "Phone number must be more than 9 digits")
+                      .max(15, "Phone number must be less than 15"),
                     username: Yup.string().required("Username is required."),
                     address: Yup.string().required("Address is required."),
                     password: Yup.string()
@@ -172,175 +172,17 @@ function RegisterView({ onRegisterStart }: any) {
                   }}
                 >
                   {({ isSubmitting }) => (
-                    <Form>
-                      <Grid container columnSpacing={2}>
-                        <Grid item xs={12} lg={6}>
-                          <Box>
-                            <Typography sx={{ ...miniTitle }}>
-                              First Name*
-                            </Typography>
-                            <Field
-                              type="text"
-                              name="firstName"
-                              placeholder="Enter your first name"
-                              fullWidth
-                              component={TextField}
-                              sx={{ marginBottom: "20px", ...textField }}
-                            />
-                          </Box>
-                        </Grid>
-                        <Grid item xs={12} lg={6}>
-                          <Box>
-                            <Typography sx={{ ...miniTitle }}>
-                              Last Name*
-                            </Typography>
-                            <Field
-                              type="text"
-                              name="lastName"
-                              placeholder="Enter your last name"
-                              fullWidth
-                              component={TextField}
-                              sx={{ marginBottom: "20px", ...textField }}
-                            />
-                          </Box>
-                        </Grid>
-                        <Grid item xs={12} lg={6}>
-                          <Box>
-                            <Typography sx={{ ...miniTitle }}>
-                              Email*
-                            </Typography>
-                            <Field
-                              type="email"
-                              name="email"
-                              placeholder="Enter your email"
-                              fullWidth
-                              component={TextField}
-                              sx={{ marginBottom: "20px", ...textField }}
-                            />
-                          </Box>
-                        </Grid>
-                        <Grid item xs={12} lg={6}>
-                          <Box>
-                            <Typography sx={{ ...miniTitle }}>
-                              Username*
-                            </Typography>
-                            <Field
-                              type="text"
-                              name="username"
-                              placeholder="Enter your username"
-                              fullWidth
-                              component={TextField}
-                              sx={{ marginBottom: "20px", ...textField }}
-                            />
-                          </Box>
-                        </Grid>
-                        <Grid item xs={12} lg={6}>
-                          {" "}
-                          <Box>
-                            <Typography sx={{ ...miniTitle }}>
-                              Password*
-                            </Typography>
-                            <Field
-                              type={showPassword ? "text" : "password"}
-                              name="password"
-                              placeholder="Password"
-                              fullWidth
-                              component={TextField}
-                              sx={{ marginBottom: "24px", ...textField }}
-                              InputProps={{
-                                endAdornment: (
-                                  <InputAdornment position="end">
-                                    <IconButton
-                                      edge="end"
-                                      aria-label="toggle password visibility"
-                                      onClick={handleClickShowPassword}
-                                      onMouseDown={handleMouseDownPassword}
-                                    >
-                                      {showPassword ? (
-                                        <VisibilityOff />
-                                      ) : (
-                                        <Visibility />
-                                      )}
-                                    </IconButton>
-                                  </InputAdornment>
-                                ),
-                              }}
-                            />
-                          </Box>
-                        </Grid>
-                        <Grid item xs={12} lg={6}>
-                          {" "}
-                          <Box>
-                            <Typography sx={{ ...miniTitle }}>
-                              Confirm Password*
-                            </Typography>
-                            <Field
-                              type={showPassword ? "text" : "password"}
-                              name="confirmPassword"
-                              placeholder="Confirm Password"
-                              fullWidth
-                              component={TextField}
-                              sx={{ marginBottom: "24px", ...textField }}
-                              InputProps={{
-                                endAdornment: (
-                                  <InputAdornment position="end">
-                                    <IconButton
-                                      edge="end"
-                                      aria-label="toggle password visibility"
-                                      onClick={handleClickShowPassword}
-                                      onMouseDown={handleMouseDownPassword}
-                                    >
-                                      {showPassword ? (
-                                        <VisibilityOff />
-                                      ) : (
-                                        <Visibility />
-                                      )}
-                                    </IconButton>
-                                  </InputAdornment>
-                                ),
-                              }}
-                            />
-                          </Box>
-                        </Grid>
-                        <Grid item xs={12}>
-                          <Box>
-                            <Typography sx={{ ...miniTitle }}>
-                              Address*
-                            </Typography>
-                            <Field
-                              type="text"
-                              name="address"
-                              placeholder="Enter your Address"
-                              fullWidth
-                              component={TextField}
-                              sx={{
-                                marginBottom: "20px",
-                                ...textField,
-                              }}
-                            />
-                          </Box>
-                        </Grid>
-                      </Grid>
-
-                      {isSubmitting && <LinearProgress />}
-
-                      <Box sx={{ marginTop: "24px" }}>
-                        <Button
-                          type="submit"
-                          variant="contained"
-                          disabled={isSubmitting}
-                          fullWidth
-                        >
-                          Register
-                        </Button>
-                      </Box>
-                    </Form>
+                    <RegisterForm
+                      isSubmitting={isSubmitting}
+                      miniTitle={miniTitle}
+                      textField={textField}
+                    />
                   )}
                 </Formik>
               </Box>
             </Box>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12} lg={6} display={{ xs: "none", md: "block" }}>
             <Box
               sx={{
                 display: "flex",
