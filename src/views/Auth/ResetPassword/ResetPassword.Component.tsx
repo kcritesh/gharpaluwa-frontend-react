@@ -11,7 +11,11 @@ import axiosConfig from "src/config/axios.config";
 import { ErrorOutline } from "@mui/icons-material";
 import ResetPasswordForm from "./component/ResetForm";
 
-function RegisterView({ onResetPassReqStart, onResetPassStart }: any) {
+function RegisterView({
+  onResetPassReqStart,
+  onResetPassStart,
+  auth: { resetPasswordSuccess },
+}: any) {
   const theme = useTheme();
 
   const wrapper = {
@@ -69,9 +73,11 @@ function RegisterView({ onResetPassReqStart, onResetPassStart }: any) {
   };
 
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const isResetPassword = searchParams.get("reset") === "true";
-  const [isTokenValid, setIsTokenValid] = React.useState(false);
+  // const [isTokenValid, setIsTokenValid] = React.useState(true);
+  const isTokenValid = searchParams.get("isValidToken") === "true";
+  const isTokenInvalid = searchParams.get("isValidToken") === "false";
   const token = searchParams.get("token");
   React.useEffect(() => {
     if (!isResetPassword) return;
@@ -80,10 +86,18 @@ function RegisterView({ onResetPassReqStart, onResetPassStart }: any) {
         resetToken: token,
       })
       .then((res) => {
-        setIsTokenValid(true);
+        // setIsTokenValid(true);
+        setSearchParams((prev) => {
+          searchParams.set("isValidToken", "true");
+          return prev;
+        });
       })
       .catch((err) => {
-        setIsTokenValid(false);
+        // setIsTokenValid(false);
+        setSearchParams((prev) => {
+          searchParams.set("isValidToken", "false");
+          return prev;
+        });
       });
   }, [isResetPassword]);
 
@@ -110,7 +124,7 @@ function RegisterView({ onResetPassReqStart, onResetPassStart }: any) {
                     onResetPassReqStart={onResetPassReqStart}
                   />
                 ) : null}
-                {isResetPassword && !isTokenValid ? (
+                {isResetPassword && isTokenInvalid ? (
                   <>
                     <Box
                       sx={{
@@ -134,8 +148,7 @@ function RegisterView({ onResetPassReqStart, onResetPassStart }: any) {
                       </Button>
                     </Box>
                   </>
-                ) : null}
-                {isResetPassword && isTokenValid ? (
+                ) : isResetPassword && isTokenValid ? (
                   <ResetPasswordForm
                     miniTitle={miniTitle}
                     textField={textField}
@@ -144,7 +157,9 @@ function RegisterView({ onResetPassReqStart, onResetPassStart }: any) {
                     onResetPassStart={onResetPassStart}
                     resetToken={token}
                   />
-                ) : null}
+                ) : (
+                  isResetPassword && <>Loading....</>
+                )}
               </Box>
             </Box>
           </Grid>
