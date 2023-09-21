@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { Field, Form, Formik } from "formik";
 import { TextField } from "formik-mui";
+import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 
 const ResetPasswordRequest = ({
@@ -18,6 +19,7 @@ const ResetPasswordRequest = ({
   SubTitle,
   onResetPassReqStart,
 }) => {
+  const navigate = useNavigate();
   return (
     <>
       <Box
@@ -45,6 +47,7 @@ const ResetPasswordRequest = ({
           setSubmitting(true);
           onResetPassReqStart(values.email, () => {
             setSubmitting(false);
+            navigate("/login");
           });
         }}
       >

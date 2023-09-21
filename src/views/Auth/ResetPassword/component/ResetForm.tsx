@@ -10,6 +10,7 @@ import {
 import { Field, Form, Formik } from "formik";
 import { TextField } from "formik-mui";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 
 const ResetPasswordForm = ({
@@ -20,6 +21,7 @@ const ResetPasswordForm = ({
   onResetPassStart,
   resetToken,
 }) => {
+  const navigate = useNavigate();
   return (
     <>
       <Box
@@ -56,6 +58,7 @@ const ResetPasswordForm = ({
 
           onResetPassStart(values, () => {
             setSubmitting(false);
+            navigate("/login");
           });
         }}
       >
