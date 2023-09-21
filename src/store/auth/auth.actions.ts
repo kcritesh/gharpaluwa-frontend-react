@@ -62,3 +62,32 @@ export const signoutFail = (error:  any) => ({
   payload: error,
 });
 
+// Reset password request
+export const resetPasswordRequestStart = (email, cb) => ({
+  type: AuthType.RESET_PASSWORD_REQUEST_START,
+  payload: { email, cb },
+});
+
+export const resetPasswordRequestSuccess = () => ({
+  type: AuthType.RESET_PASSWORD_REQUEST_SUCCESS,
+});
+
+export const resetPasswordRequestFail = (error) => ({
+  type: AuthType.RESET_PASSWORD_REQUEST_FAILURE,
+  payload: error,
+});
+
+// Reset password
+export const resetPasswordStart = (formData, cb) => ({
+  type: AuthType.RESET_PASSWORT_START,
+  payload: { formData, cb },
+});
+
+export const resetPasswordSuccess = () => ({
+  type: AuthType.RESET_PASSWORD_SUCCESS,
+})
+
+export const resetPasswordFail = (error) => ({
+  type: AuthType.RESET_PASSWORD_FAILURE,
+  payload: error,
+});

@@ -15,16 +15,12 @@ import {
 import { Field, Form, Formik } from "formik";
 // import Image from "next/image";
 // import Link from "next/link";
-import { Link, useNavigate } from "react-router-dom";
-import React from "react";
+import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import container from "./Register.Container";
-import { TextField } from "formik-mui";
 
 import gharpaluwaIcon from "src/assets/images/gharpaluwa.com.svg";
 
-import Checked from "src/assets/images/checked.svg";
-import UnChecked from "src/assets/images/unchecked.svg";
 import RegisterForm from "./component/RegisterForm";
 
 function RegisterView({ onRegisterStart }: any) {
