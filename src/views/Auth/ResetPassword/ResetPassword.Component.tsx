@@ -109,16 +109,8 @@ function RegisterView({ onResetPassReqStart, onResetPassStart }: any) {
                     SubTitle={SubTitle}
                     onResetPassReqStart={onResetPassReqStart}
                   />
-                ) : isTokenValid ? (
-                  <ResetPasswordForm
-                    miniTitle={miniTitle}
-                    textField={textField}
-                    Title={Title}
-                    SubTitle={SubTitle}
-                    onResetPassStart={onResetPassStart}
-                    resetToken={token}
-                  />
-                ) : (
+                ) : null}
+                {isResetPassword && !isTokenValid ? (
                   <>
                     <Box
                       sx={{
@@ -142,7 +134,17 @@ function RegisterView({ onResetPassReqStart, onResetPassStart }: any) {
                       </Button>
                     </Box>
                   </>
-                )}
+                ) : null}
+                {isResetPassword && isTokenValid ? (
+                  <ResetPasswordForm
+                    miniTitle={miniTitle}
+                    textField={textField}
+                    Title={Title}
+                    SubTitle={SubTitle}
+                    onResetPassStart={onResetPassStart}
+                    resetToken={token}
+                  />
+                ) : null}
               </Box>
             </Box>
           </Grid>
