@@ -1,3 +1,4 @@
+import { boolean } from "yup";
 import { IAuthState } from "../interfaces";
 import * as AuthType from "./auth.types";
 
@@ -8,10 +9,17 @@ const INITIAL_STATE: IAuthState = {
   error: null,
   loading: false,
   authLoading: true,
+  resetPasswordLoading: false,
+  resetPasswordRequestLoading: false,
+  resetPasswordRequestSuccess: false,
+  resetPasswordSuccess: false,
 };
 
 // Reducer function responsible for managing the authentication state
-const authReducer = (state = INITIAL_STATE, action: { type: any; payload: any; }) => {
+const authReducer = (
+  state = INITIAL_STATE,
+  action: { type: any; payload: any }
+) => {
   const { type, payload } = action;
   switch (type) {
     case AuthType.SIGN_IN_START:
@@ -31,22 +39,22 @@ const authReducer = (state = INITIAL_STATE, action: { type: any; payload: any; }
         authLoading: false,
       };
     case AuthType.REGISTER_SUCCESS:
-      return{
+      return {
         ...state,
         currentUser: payload,
         loading: false,
         authLoading: false,
-      }
-    
+      };
+
     case AuthType.REGISTER_FAILURE:
-      return{
+      return {
         ...state,
         error: payload,
         loading: false,
         authLoading: false,
-      }
+      };
 
-      case AuthType.LOAD_USER_SUCCESS:
+    case AuthType.LOAD_USER_SUCCESS:
       return {
         ...state,
         isAuthenticated: true,
@@ -64,6 +72,45 @@ const authReducer = (state = INITIAL_STATE, action: { type: any; payload: any; }
         error: null,
       };
 
+    case AuthType.RESET_PASSWORD_REQUEST_START:
+      return {
+        ...state,
+        resetPasswordRequestLoading: true,
+      };
+
+    case AuthType.RESET_PASSWORD_REQUEST_SUCCESS:
+      return {
+        ...state,
+        resetPasswordRequestLoading: false,
+        resetPasswordRequestSuccess: true,
+      };
+
+    case AuthType.RESET_PASSWORD_REQUEST_FAILURE:
+      return {
+        ...state,
+        resetPasswordRequestLoading: false,
+        resetPasswordRequestSuccess: false,
+        error: payload,
+      };
+
+    case AuthType.RESET_PASSWORT_START:
+      return {
+        ...state,
+        resetPasswordLoading: true,
+      };
+
+    case AuthType.RESET_PASSWORD_SUCCESS:
+      return {
+        ...state,
+        resetPasswordLoading: false,
+        resetPasswordSuccess: true,
+      };
+
+    case AuthType.RESET_PASSWORD_FAILURE:
+      return {
+        ...state,
+        resetPasswordLoading: false,
+      };
     case AuthType.LOAD_USER_FAILURE:
     case AuthType.SIGN_IN_FAILURE:
     case AuthType.SIGN_OUT_FAILURE:
@@ -72,7 +119,7 @@ const authReducer = (state = INITIAL_STATE, action: { type: any; payload: any; }
         loading: false,
         error: payload,
         authLoading: false,
-        isAuthenticated: null
+        isAuthenticated: null,
       };
 
     default:

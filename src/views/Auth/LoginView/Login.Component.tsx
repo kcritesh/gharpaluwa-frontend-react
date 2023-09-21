@@ -254,7 +254,10 @@ function LoginView({ onSigninStart }: any) {
                           </Typography>
                         </Box>
                         <Box>
-                          <Link to="#" style={{ textDecoration: "none" }}>
+                          <Link
+                            to="/reset-password"
+                            style={{ textDecoration: "none" }}
+                          >
                             <Typography
                               sx={{
                                 fontWeight: 500,
@@ -263,7 +266,7 @@ function LoginView({ onSigninStart }: any) {
                                 color: "#1366D9",
                               }}
                             >
-                              Forgot Password
+                              Forgot Password ?
                             </Typography>
                           </Link>
                         </Box>

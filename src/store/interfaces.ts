@@ -5,6 +5,10 @@ export interface IAuthState {
   error: any | null;
   loading: boolean;
   authLoading?: boolean;
+  resetPasswordLoading?: boolean;
+  resetPasswordRequestLoading?: boolean;
+  resetPasswordRequestSuccess?: boolean;
+  resetPasswordSuccess?: boolean;
 }
 
 export interface IProductState {
@@ -17,7 +21,7 @@ export interface IProductState {
 
 export interface IOrderState {
   vendorOrders: any[];
-  customerOrders : any[];
+  customerOrders: any[];
   error: any | null;
   loading: boolean;
   loadingCreateUpdate: boolean;

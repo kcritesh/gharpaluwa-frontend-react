@@ -15,6 +15,7 @@ import VerifyEmail from "src/pages/verifyEmail";
 import OrdersPage from "src/pages/manage/orders/Orders";
 import ProductsPage from "src/pages/manage/products/Products";
 import CreateProductsPage from "src/pages/manage/products/create";
+import ResetPasswordComponent from "src/views/Auth/ResetPassword/ResetPassword.Component";
 const Router = () => {
   // Fallback path which will be redirected to
   const fallbackPath = "/login";
@@ -33,6 +34,7 @@ const Router = () => {
         <Route path="/" element={<PublicRoute />}>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/reset-password" element={<ResetPasswordComponent />} />
         </Route>
         <Route
           path="/"

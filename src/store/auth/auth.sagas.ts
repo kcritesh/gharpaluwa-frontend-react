@@ -7,7 +7,6 @@ import axiosConfig, { setAuthToken } from "../../config/axios.config";
 import { openAlert } from "../alert/alert.actions";
 
 export function* loadUserAsync() {
-
   if (localStorage["access_token"]) {
     try {
       // Fetch user data from the API
@@ -17,12 +16,10 @@ export function* loadUserAsync() {
       localStorage.removeItem("access_token");
       yield put(authActions.loadUserFail(error));
     }
-  }
-  else {
+  } else {
     yield put(authActions.loadUserFail("No Access Token"));
     localStorage.removeItem("access_token");
   }
-
 }
 
 export function* onSigninAsync({ payload: { formData, cb } }: any) {
@@ -48,7 +45,6 @@ export function* onSigninAsync({ payload: { formData, cb } }: any) {
 
     yield put(openAlert("User Signed In Successfully", "success"));
   } catch (err) {
-  
     yield put(authActions.signinFail(err));
     yield put(openAlert(err.response.data.message, "error"));
   }
@@ -56,10 +52,12 @@ export function* onSigninAsync({ payload: { formData, cb } }: any) {
 
 export function* onRegisterAsync({ payload: { formData, cb } }: any) {
   try {
-    const {data} = yield axiosConfig.post("/api/auth/register", formData);
+    const { data } = yield axiosConfig.post("/api/auth/register", formData);
     yield put(authActions.registerSuccess(data));
-    yield put(openAlert("User Registered Successfully! \nProceed to Sign In", "success"));
-    if(cb) {
+    yield put(
+      openAlert("User Registered Successfully! \nProceed to Sign In", "success")
+    );
+    if (cb) {
       yield cb();
     }
   } catch (error) {
@@ -84,6 +82,38 @@ export function* signOutAsync({ payload: { cb } }: any) {
   }
 }
 
+export function* resetPasswordRequestAsync({ payload: { email, cb } }: any) {
+  try {
+    yield axiosConfig.post("/api/auth/reset-password-request", {
+      email,
+    });
+    yield put(openAlert("Password reset link sent to your email", "success"));
+    yield put(authActions.resetPasswordRequestSuccess());
+    if (cb) {
+      yield cb();
+    }
+  } catch (err) {
+    yield put(authActions.resetPasswordRequestFail(err));
+    yield put(openAlert(err.response.data.message, "error"));
+  }
+}
+
+export function* resetPasswordAsync({ payload: { formData, cb } }: any) {
+  try {
+    yield axiosConfig.post("/api/auth/reset-password", {
+      formData,
+    });
+    yield put(openAlert("Password reset successfully", "success"));
+    yield put(authActions.resetPasswordSuccess());
+    if (cb) {
+      yield cb();
+    }
+  } catch (err) {
+    yield put(authActions.resetPasswordFail(err));
+    yield put(openAlert(err.response.data.message, "error"));
+  }
+}
+
 export function* watchLoadUser() {
   yield takeLatest(AuthType.LOAD_USER_START, loadUserAsync);
 }
@@ -100,6 +130,24 @@ export function* watchSignout() {
   yield takeLatest(AuthType.SIGN_OUT_START, signOutAsync);
 }
 
+export function* watchResetPasswordRequest() {
+  yield takeLatest(
+    AuthType.RESET_PASSWORD_REQUEST_START,
+    resetPasswordRequestAsync
+  );
+}
+
+export function* watchResetPassword() {
+  yield takeLatest(AuthType.RESET_PASSWORT_START, resetPasswordAsync);
+}
+
 export function* authSagas() {
-  yield all([call(watchSignin), call(watchSignout), call(watchLoadUser), call(watchRegister)]);
+  yield all([
+    call(watchSignin),
+    call(watchSignout),
+    call(watchLoadUser),
+    call(watchRegister),
+    call(watchResetPasswordRequest),
+    call(watchResetPassword),
+  ]);
 }
