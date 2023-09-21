@@ -100,9 +100,9 @@ export function* resetPasswordRequestAsync({ payload: { email, cb } }: any) {
 
 export function* resetPasswordAsync({ payload: { formData, cb } }: any) {
   try {
-    yield axiosConfig.post("/api/auth/reset-password", {
+    yield axiosConfig.post("/api/auth/reset-password", 
       formData,
-    });
+    );
     yield put(openAlert("Password reset successfully", "success"));
     yield put(authActions.resetPasswordSuccess());
     if (cb) {
