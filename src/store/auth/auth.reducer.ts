@@ -13,6 +13,8 @@ const INITIAL_STATE: IAuthState = {
   resetPasswordRequestLoading: false,
   resetPasswordRequestSuccess: false,
   resetPasswordSuccess: false,
+  verificationOtpLoading: false,
+  verificationOtpSuccess: false,
 };
 
 // Reducer function responsible for managing the authentication state
@@ -122,6 +124,27 @@ const authReducer = (
         isAuthenticated: null,
       };
 
+    case AuthType.VERIFY_OTP_START:
+      return {
+        ...state,
+        loading: true,
+        verificationOtpLoading: true,
+        verificationOtpSuccess: false,
+      };
+    case AuthType.VERIFY_OTP_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        verificationOtpLoading: false,
+        verificationOtpSuccess: true,
+      };
+    case AuthType.VERIFY_OTP_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        verificationOtpLoading: false,
+        verificationOtpSuccess: false,
+      };
     default:
       return state;
   }

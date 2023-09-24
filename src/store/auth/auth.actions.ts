@@ -45,7 +45,7 @@ export const registerSuccess = (currentUser) => ({
 export const registerFail = (error) => ({
   type: AuthType.REGISTER_FAILURE,
   payload: error,
-})
+});
 
 // Logout the user
 export const signoutStart = (cb) => ({
@@ -57,7 +57,7 @@ export const signoutSuccess = () => ({
   type: AuthType.SIGN_OUT_SUCCESS,
 });
 
-export const signoutFail = (error:  any) => ({
+export const signoutFail = (error: any) => ({
   type: AuthType.SIGN_OUT_FAILURE,
   payload: error,
 });
@@ -85,9 +85,24 @@ export const resetPasswordStart = (formData, cb) => ({
 
 export const resetPasswordSuccess = () => ({
   type: AuthType.RESET_PASSWORD_SUCCESS,
-})
+});
 
 export const resetPasswordFail = (error) => ({
   type: AuthType.RESET_PASSWORD_FAILURE,
+  payload: error,
+});
+
+// Verify OTP
+export const verifyOTPStart = (formData, cb) => ({
+  type: AuthType.VERIFY_OTP_START,
+  payload: { formData, cb },
+});
+
+export const verifyOTPSuccess = () => ({
+  type: AuthType.VERIFY_OTP_SUCCESS,
+});
+
+export const verifyOTPFail = (error) => ({
+  type: AuthType.VERIFY_OTP_FAILURE,
   payload: error,
 });
