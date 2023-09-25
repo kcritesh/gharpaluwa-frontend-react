@@ -6,7 +6,8 @@ import { Field, Form, Formik } from "formik";
 import { TextField } from "formik-mui";
 import axiosConfig from "src/config/axios.config";
 import { openAlert } from "src/store/alert/alert.actions";
-import { useDispatch } from "react-redux";
+import { verifyOTPStart, loadUserStart } from "src/store/auth/auth.actions";
+import { useDispatch, useSelector } from "react-redux";
 
 interface DashboardProps {
   auth: {
@@ -45,7 +46,7 @@ const Dashboard = ({
     axiosConfig
       .post("/api/auth/send-phone-verification")
       .then(() => {
-        console.log(timeLeft)
+        console.log(timeLeft);
         setTimeLeft((prev) => (prev === 0 ? 30 : prev));
       })
       .catch((err) => {
@@ -97,8 +98,13 @@ const Dashboard = ({
             initialValues={{
               otp: "",
             }}
-            onSubmit={(values, formikHelpers) => {
-              console.log(values);
+            onSubmit={(values, { setSubmitting }) => {
+              dispatch(
+                verifyOTPStart(values, () => {
+                  setOpen(false);
+                  dispatch(loadUserStart());
+                })
+              );
             }}
           >
             {({ isSubmitting }) => (
@@ -190,7 +196,7 @@ const Dashboard = ({
                       }}
                       disabled={isSubmitting}
                     >
-                      {isSubmitting ? "Uploading" : "Save"}
+                      {isSubmitting ? "Verifying" : "Verify"}
                     </Button>
                   </Box>
                 </Box>
