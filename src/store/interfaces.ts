@@ -9,6 +9,8 @@ export interface IAuthState {
   resetPasswordRequestLoading?: boolean;
   resetPasswordRequestSuccess?: boolean;
   resetPasswordSuccess?: boolean;
+  verificationOtpLoading?: boolean;
+  verificationOtpSuccess?: boolean;
 }
 
 export interface IProductState {

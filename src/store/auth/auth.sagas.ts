@@ -100,9 +100,7 @@ export function* resetPasswordRequestAsync({ payload: { email, cb } }: any) {
 
 export function* resetPasswordAsync({ payload: { formData, cb } }: any) {
   try {
-    yield axiosConfig.post("/api/auth/reset-password", 
-      formData,
-    );
+    yield axiosConfig.post("/api/auth/reset-password", formData);
     yield put(openAlert("Password reset successfully", "success"));
     yield put(authActions.resetPasswordSuccess());
     if (cb) {
@@ -110,6 +108,22 @@ export function* resetPasswordAsync({ payload: { formData, cb } }: any) {
     }
   } catch (err) {
     yield put(authActions.resetPasswordFail(err));
+    yield put(openAlert(err.response.data.message, "error"));
+  }
+}
+
+export function* verifyOTPAsync({ payload: { formData, cb } }: any) {
+  try {
+    yield axiosConfig.post("/api/auth/verify-phone-verification", {
+      ...formData,
+    });
+    yield put(openAlert("OTP verified successfully", "success"));
+    yield put(authActions.verifyOTPSuccess());
+    if (cb) {
+      yield cb();
+    }
+  } catch (err) {
+    yield put(authActions.verifyOTPFail(err));
     yield put(openAlert(err.response.data.message, "error"));
   }
 }
@@ -141,6 +155,11 @@ export function* watchResetPassword() {
   yield takeLatest(AuthType.RESET_PASSWORT_START, resetPasswordAsync);
 }
 
+// watch phone verification
+export function* watchVerifyOTP() {
+  yield takeLatest(AuthType.VERIFY_OTP_START, verifyOTPAsync);
+}
+
 export function* authSagas() {
   yield all([
     call(watchSignin),
@@ -149,5 +168,6 @@ export function* authSagas() {
     call(watchRegister),
     call(watchResetPasswordRequest),
     call(watchResetPassword),
+    call(watchVerifyOTP),
   ]);
 }
