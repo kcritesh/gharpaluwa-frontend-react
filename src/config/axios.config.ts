@@ -2,7 +2,7 @@
 import axios, { AxiosRequestHeaders } from "axios";
 const instance = axios.create({
   // .. where we make our configurations
-  baseURL: "https://api.gharpaluwa.com/", // for production
+  baseURL: "https://api.gharpaluwa.riteshkc.com.np/", // for production
   // baseURL: "http://localhost:9000", // for local
   // baseURL: "http://localhost", // for build
 
