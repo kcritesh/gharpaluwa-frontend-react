@@ -17,6 +17,7 @@ import { Field, Form, Formik } from "formik";
 import { TextField } from "formik-mui";
 import Dropzone from "react-dropzone";
 import DefaultImage from "src/assets/images/defaultImage.svg";
+import CKEditor from "src/components/CKEditor";
 
 interface Props {
   onCreateProduct: (formData: any, cb: any) => void;
@@ -265,7 +266,6 @@ const CreateProducts = ({
                           }}
                         />
                       </Grid>
-
                       <Grid item xs={12} md={6} lg={4}>
                         <Typography
                           sx={{
