@@ -28,3 +28,19 @@ export interface IOrderState {
   loading: boolean;
   loadingCreateUpdate: boolean;
 }
+
+export interface ICategoryState {
+  categoriesAndSubCategories: any[];
+  categories: any[];
+  subCategories: any[];
+  subCategoriesByCategory: any[];
+  categoriesCount: number;
+  subCategoriesCount: number;
+  error: any | null;
+  loading: boolean;
+  loadingCreateUpdate: boolean;
+  categoryById: any | null;
+  subCategoryById: any | null;
+  isUpdatingCategory: boolean;
+  isUpdatingSubCategory: boolean;
+}

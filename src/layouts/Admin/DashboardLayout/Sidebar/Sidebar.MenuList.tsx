@@ -27,6 +27,11 @@ export const SidebarMenuListTop = [
     path: "/manage/dashboard",
   },
   {
+    title: "Categories",
+    icon: MasterListSvg,
+    path: "/manage/categories",
+  },
+  {
     title: "Products",
     icon: MasterListSvg,
     path: "/manage/products",
